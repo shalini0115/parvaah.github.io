@@ -62,6 +62,9 @@ loginForm.addEventListener('submit', (event) => {
 });
 
 
+loginPopup.style.display = 'none';
+document.body.appendChild(loginPopup);
+
 signupForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -71,7 +74,7 @@ signupForm.addEventListener('submit', (event) => {
     const referenceCode = document.getElementById('signupReferenceCode').value;
     const messageContainer = document.getElementById('messageContainer'); // Message container
 
-    if (referenceCode === 'shalu0115') {
+    if (referenceCode === 'sih2024') {
         const users = JSON.parse(localStorage.getItem('users')) || [];
 
         if (users.some(user => user.email === signupEmail)) {
@@ -82,29 +85,33 @@ signupForm.addEventListener('submit', (event) => {
                 loginPopup.style.display = 'flex'; // Show login popup
             }, 2000); // Wait 2 seconds
         } else {
-            const newUser = { username: signupUsername, email: signupEmail, password: signupPassword };
-            users.push(newUser);
-            localStorage.setItem('users', JSON.stringify(users));
-            sessionStorage.setItem('currentUser', JSON.stringify(newUser));
+             const newUser = { username: signupUsername, email: signupEmail, password: signupPassword };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
 
-            messageContainer.textContent = 'Registration successful! Redirecting to home...';
-            messageContainer.style.color = 'green';
-            setTimeout(() => {
-                window.location.href = 'home.html'; // Redirect to home
-            }, 2000); // Wait 2 seconds
+
+                messageContainer.textContent = 'Sign up successful!';
+                messageContainer.style.color = 'green';
+
+                setTimeout(() => {
+                    signupPopup.style.display = 'none';
+                    loginPopup.style.display = 'flex'; // Show login popup
+                }, 2000); // Wait 2 seconds
+            }
+        } else {
+            messageContainer.textContent = 'Invalid Reference Code.';
+            messageContainer.style.color = 'red';
         }
-    } else {
-        messageContainer.textContent = 'Invalid Reference Code.';
-        messageContainer.style.color = 'red';
-    }
-});
+    });
 
-// Handle "Back to login" click event
-const backToLoginLink = document.querySelector('#signupPopup a');
-backToLoginLink.addEventListener('click', () => {
-    signupPopup.style.display = 'none';
-    loginPopup.style.display = 'flex'; // Show login popup
-});
+    // Handle "Back to login" click event
+    const backToLoginLink = document.getElementById('backToLoginLink');
+    backToLoginLink.addEventListener('click', () => {
+        signupPopup.style.display = 'none';
+        loginPopup.style.display = 'flex'; // Show login popup
+    });
+
 
 // Handle guest location form submission
 guestLocationForm.addEventListener('submit', (event) => {
